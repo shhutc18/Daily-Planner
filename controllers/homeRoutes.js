@@ -1,8 +1,7 @@
 const router = require('express').Router();
-const withAuth = require('../utils/auth');
+const checkAuthenticated = require('../utils/auth');
 
-
-router.get('/', withAuth, async (req, res) => {
+router.get('/', checkAuthenticated, async (req, res) => {
   try {
     // retrieve the user's data from the database
     // send the user's data to the homepage template
