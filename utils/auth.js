@@ -1,10 +1,10 @@
-const withAuth = (req, res, next) => {
-    // If the user isn't logged in, redirect them to the login route
-    if (!req.session.logged_in) {
-      res.redirect('/login');
-    } else {
-      next();
-    }
-  };
-  
-  module.exports = withAuth;
+// Passport
+
+var express = require('express');
+var router = express.Router();
+
+router.get('/login', function(req, res, next) {
+  res.render('login');
+});
+
+module.exports = router;
