@@ -41,10 +41,9 @@ app.use(routes);
 
 // Passport functionality v
 
-var express = require('express');
 // var app = express();
 
-var indexRouter = require('./routes/index');
+var indexRouter = require('./controllers/index');
 var authRouter = require('./utils/auth');
 
 app.use('/', indexRouter);
