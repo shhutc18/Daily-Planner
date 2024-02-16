@@ -4,9 +4,19 @@ const withAuth = require('../utils/auth');
 
 router.get('/', withAuth, async (req, res) => {
   try {
-    // retrieve the user's data from the database
-    // send the user's data to the homepage template
-    res.render('homepage');
+    // TODO: retrieve the user's data from the database
+    // TODO: send the user's data to the homepage template
+    // res.render('homepage');
+
+    //HACK: temporarily sending the random user data to the homepage template
+    const userData = {
+      username: 'Test User'
+    };
+
+    const today = new Date();
+
+    res.render('homepage', { userData, today });
+
   } catch (err) {
     res.status(500).json(err);
   }
