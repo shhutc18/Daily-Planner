@@ -1,11 +1,12 @@
 {{!-- Header --}}
 <header class="flex items-center justify-around p-2">
-    <h1 class="font-bold text-2xl text-center">{{ today.month }}/{{today.day}}/{{today.year}}</h1>
-    <h2 class="opacity-70">Welcome, {{ userData.username }}</h2>
+    <h1 class="font-bold text-lg md:text-2xl text-center">{{ today.month }}/{{today.day}}/{{today.year}}</h1>
+    <h2 class="opacity-70 text-sm md:text-base">Welcome, {{ userData.username }}</h2>
+    <button class="opacity-70 text-sm md:text-base">Logout</button>
 </header>
 
 {{!-- container --}}
-<div class="container flex flex-col">
+<div class="container flex flex-col m-auto">
     {{!-- Calender / Time Segments --}}
     <section class="w-full p-4">
         <h3 class="text-center">Your daily overview:</h3>
