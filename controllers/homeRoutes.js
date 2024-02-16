@@ -13,7 +13,15 @@ router.get('/', withAuth, async (req, res) => {
       username: 'Test User'
     };
 
-    const today = new Date();
+    const date = new Date();
+    let day = date.getDate();
+    let month = date.getMonth() + 1;
+    let year = date.getFullYear();
+    let today = {
+      day: day,
+      month: month,
+      year: year
+    }
 
     res.render('homepage', { userData, today });
 
