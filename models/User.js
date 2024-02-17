@@ -1,9 +1,6 @@
 const { Model, DataTypes } = require('sequelize');
 const sequelize = require('../config/connection');
-
-class User extends Model {
-
-}
+class User extends Model {}
 
 User.init(
     {
@@ -23,7 +20,15 @@ User.init(
         validate: {
             len: [4]
         }
-        }
+        },
+        hashed_password: {
+        type: DataTypes.STRING,
+        allowNull: false
+        },
+        notes: {
+        type: DataTypes.STRING,
+        allowNull: false
+        },
     },
     {
         sequelize,
