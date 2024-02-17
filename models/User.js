@@ -1,6 +1,7 @@
 const { Model, DataTypes } = require('sequelize');
 const sequelize = require('../config/connection');
 class User extends Model {}
+const crypto = require('crypto');
 
 User.init(
     {
@@ -29,6 +30,20 @@ User.init(
         type: DataTypes.STRING,
         allowNull: false
         },
+    },
+    {
+        hooks: {
+            async beforeCreate(newUserData) {
+                const hashedPassword = crypto.createHash('sha256').update(newUserData.password).digest('hex');
+                newUserData.password = hashedPassword;
+                return newUserData;
+            },
+            async beforeUpdate(updatedUserData) {
+                const hashedPassword = crypto.createHash('sha256').update(updatedUserData.password).digest('hex');
+                updatedUserData.password = hashedPassword;
+                return updatedUserData;
+            }
+        }
     },
     {
         sequelize,
