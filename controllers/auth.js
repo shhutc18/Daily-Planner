@@ -22,6 +22,19 @@ passport.use(new LocalStrategy(async function verify(username, password, cb) {
   }
 }));
 
+passport.serializeUser(function(user, done) {
+  done(null, user.id);
+});
+
+passport.deserializeUser(async function(id, done) {
+  try {
+    const user = await User.findByPk(id);
+    done(null, user);
+  } catch (err) {
+    done(err);
+  }
+});
+
 router.get('/login', function(req, res, next) {
   res.render('login');
 });
