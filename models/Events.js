@@ -2,7 +2,9 @@ const { Model, DataTypes } = require('sequelize');
 const sequelize = require('../config/connection');
 const e = require('express');
 
-event.init(
+class Event extends Model {}
+
+Event.init(
     {
         id: {
             type: DataTypes.INTEGER,
@@ -42,3 +44,5 @@ event.init(
         modelName: 'event'
     }
 );
+
+module.exports = Event;

@@ -39,6 +39,20 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(routes);
 
+// Passport functionality v
+
+// var app = express();
+
+var indexRouter = require('./controllers/index');
+var authRouter = require('./utils/auth');
+
+app.use('/', indexRouter);
+app.use('/', authRouter);
+
+// Passport functionality ^
+
+
+
 sequelize.sync({ force: false }).then(() => {
   app.listen(PORT, () => console.log('Now listening'));
 });
