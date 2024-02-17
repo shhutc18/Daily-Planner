@@ -1,5 +1,6 @@
 const { Model, DataTypes } = require('sequelize');
 const sequelize = require('../config/connection');
+
 class Day extends Model {}
 
 Day.init(
@@ -44,3 +45,5 @@ Day.init(
         modelName: 'day'
     }
 );  
+
+module.exports = Day;

@@ -30,13 +30,4 @@ Day.hasMany(Todo, {
     onDelete: 'CASCADE'
 });
 
-User.hasMany(Notes, {
-    foreignKey: 'user_id',
-    onDelete: 'CASCADE'
-});
-
-Notes.belongsTo(User, {
-    foreignKey: 'user_id'
-});
-
 module.exports = { User, Events, Todo, Day};
