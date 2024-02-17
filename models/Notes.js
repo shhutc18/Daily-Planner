@@ -1,27 +1,15 @@
 const { Model, DataTypes } = require('sequelize');
 const sequelize = require('../config/connection');
 
-tasks.init(
+notes.init(
     {
-        id: {
+        id : {
             type: DataTypes.INTEGER,
             allowNull: false,
             primaryKey: true,
             autoIncrement: true
         },
-        task_name: {
-            type: DataTypes.STRING,
-            allowNull: false
-        },
-        task_date: {
-            type: DataTypes.DATE,
-            allowNull: false
-        },
-        task_time: {
-            type: DataTypes.TIME,
-            allowNull: false
-        },
-        task_location: {
+        note_name : {
             type: DataTypes.STRING,
             allowNull: false
         },
@@ -38,6 +26,6 @@ tasks.init(
         timestamps: false,
         freezeTableName: true,
         underscored: true,
-        modelName: 'tasks'
+        modelName: 'notes'
     }
 );
