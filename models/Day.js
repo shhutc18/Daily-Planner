@@ -1,7 +1,7 @@
 const { Model, DataTypes } = require('sequelize');
 const sequelize = require('../config/connection');
 
-tasks.init(
+Day.init(
     {
         id: {
             type: DataTypes.INTEGER,
@@ -9,20 +9,8 @@ tasks.init(
             primaryKey: true,
             autoIncrement: true
         },
-        task_name: {
-            type: DataTypes.STRING,
-            allowNull: false
-        },
-        task_date: {
+        date: {
             type: DataTypes.DATE,
-            allowNull: false
-        },
-        task_time: {
-            type: DataTypes.TIME,
-            allowNull: false
-        },
-        task_location: {
-            type: DataTypes.STRING,
             allowNull: false
         },
         user_id: {
@@ -31,13 +19,27 @@ tasks.init(
                 model: 'user',
                 key: 'id'
             }
-        }
+        },
+        event_id: {
+            type: DataTypes.INTEGER,
+            references: {
+                model: 'event',
+                key: 'id'
+            }
+        },
+        todo_id: {
+            type: DataTypes.INTEGER,
+            references: {
+                model: 'todo',
+                key: 'id'
+            }
+        },
     },
     {
         sequelize,
         timestamps: false,
         freezeTableName: true,
         underscored: true,
-        modelName: 'tasks'
+        modelName: 'day'
     }
-);
+);  

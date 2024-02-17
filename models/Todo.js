@@ -13,12 +13,18 @@ todo.init(
             type: DataTypes.STRING,
             allowNull: false
         },
-        user_id: {
+        day_id : {
             type: DataTypes.INTEGER,
+            allowNull: false,
             references: {
-                model: 'user',
+                model: 'day',
                 key: 'id'
             }
+        },
+        completed : {
+            type: DataTypes.BOOLEAN,
+            allowNull: false,
+            defaultValue: false
         }
     },
     {

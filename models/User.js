@@ -23,7 +23,15 @@ User.init(
         validate: {
             len: [4]
         }
-        }
+        },
+        hashed_password: {
+        type: DataTypes.STRING,
+        allowNull: false
+        },
+        notes: {
+        type: DataTypes.STRING,
+        allowNull: false
+        },
     },
     {
         sequelize,

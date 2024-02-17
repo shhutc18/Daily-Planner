@@ -16,10 +16,6 @@ Event.init(
             type: DataTypes.STRING,
             allowNull: false
         },
-        event_date: {
-            type: DataTypes.DATE,
-            allowNull: false
-        },
         event_time: {
             type: DataTypes.TIME,
             allowNull: false
@@ -28,13 +24,18 @@ Event.init(
             type: DataTypes.STRING,
             allowNull: false
         },
-        user_id: {
+        event_length: {
             type: DataTypes.INTEGER,
+            allowNull: false
+        },
+        day_id: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
             references: {
-                model: 'user',
+                model: 'day',
                 key: 'id'
             }
-        }
+        },
     },
     {
         sequelize,
