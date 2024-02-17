@@ -1,7 +1,5 @@
 const { Model, DataTypes } = require('sequelize');
 const sequelize = require('../config/connection');
-const e = require('express');
-
 class Event extends Model {}
 
 Event.init(
