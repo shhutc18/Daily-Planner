@@ -1,7 +1,9 @@
 const { Model, DataTypes } = require('sequelize');
 const sequelize = require('../config/connection');
 
-todo.init(
+class Todo extends Model {}
+
+Todo.init(
     {
         id : {
             type: DataTypes.INTEGER,
@@ -26,6 +28,8 @@ todo.init(
         timestamps: false,
         freezeTableName: true,
         underscored: true,
-        modelName: 'todo'
+        modelName: 'Todo'
     }
 );
+
+module.exports = Todo;
