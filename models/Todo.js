@@ -1,29 +1,15 @@
 const { Model, DataTypes } = require('sequelize');
 const sequelize = require('../config/connection');
 
-class Tasks extends Model {}
-
-Tasks.init(
+todo.init(
     {
-        id: {
+        id : {
             type: DataTypes.INTEGER,
             allowNull: false,
             primaryKey: true,
             autoIncrement: true
         },
-        task_name: {
-            type: DataTypes.STRING,
-            allowNull: false
-        },
-        task_date: {
-            type: DataTypes.DATE,
-            allowNull: false
-        },
-        task_time: {
-            type: DataTypes.TIME,
-            allowNull: false
-        },
-        task_location: {
+        todo_name : {
             type: DataTypes.STRING,
             allowNull: false
         },
@@ -40,8 +26,6 @@ Tasks.init(
         timestamps: false,
         freezeTableName: true,
         underscored: true,
-        modelName: 'tasks'
+        modelName: 'todo'
     }
 );
-
-module.exports = Tasks;

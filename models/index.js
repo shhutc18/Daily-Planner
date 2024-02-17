@@ -1,6 +1,7 @@
 const User = require('./User');
 const Events = require('./Events');
-const Tasks = require('./Tasks');
+const Todo = require('./Todo');
+const Notes = require('./Notes');
 
 User.hasMany(Events, {
     foreignKey: 'user_id',
@@ -11,15 +12,22 @@ Events.belongsTo(User, {
     foreignKey: 'user_id'
 });
 
-User.hasMany(Tasks, {
+User.hasMany(Todo, {
     foreignKey: 'user_id',
     onDelete: 'CASCADE'
 });
 
-Tasks.belongsTo(User, {
+Todo.belongsTo(User, {
     foreignKey: 'user_id'
 });
 
+User.hasMany(Notes, {
+    foreignKey: 'user_id',
+    onDelete: 'CASCADE'
+});
 
+Notes.belongsTo(User, {
+    foreignKey: 'user_id'
+});
 
-module.exports = { User, Events, Tasks };
+module.exports = { User, Events, Todo, Notes };
