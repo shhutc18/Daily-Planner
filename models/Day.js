@@ -22,20 +22,20 @@ Day.init(
                 key: 'id'
             }
         },
-        event_id: {
-            type: DataTypes.INTEGER,
-            references: {
-                model: 'event',
-                key: 'id'
-            }
-        },
-        todo_id: {
-            type: DataTypes.INTEGER,
-            references: {
-                model: 'todo',
-                key: 'id'
-            }
-        },
+        // event_id: {
+        //     type: DataTypes.INTEGER,
+        //     references: {
+        //         model: 'event',
+        //         key: 'id'
+        //     }
+        // },
+        // todo_id: {
+        //     type: DataTypes.INTEGER,
+        //     references: {
+        //         model: 'todo',
+        //         key: 'id'
+        //     }
+        // },
     },
     {
         sequelize,

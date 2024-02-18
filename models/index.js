@@ -1,5 +1,5 @@
 const User = require('./User');
-const Events = require('./Events');
+const Event = require('./Event');
 const Todo = require('./Todo');
 const Day = require('./Day');
 
@@ -12,11 +12,11 @@ User.hasMany(Day, {
     onDelete: 'CASCADE'
 });
 
-Events.belongsTo(Day, {
+Event.belongsTo(Day, {
     foreignKey: 'day_id'
 });
 
-Day.hasMany(Events, {
+Day.hasMany(Event, {
     foreignKey: 'day_id',
     onDelete: 'CASCADE'
 });
@@ -30,4 +30,4 @@ Day.hasMany(Todo, {
     onDelete: 'CASCADE'
 });
 
-module.exports = { User, Events, Todo, Day};
+module.exports = { User, Event, Todo, Day};
