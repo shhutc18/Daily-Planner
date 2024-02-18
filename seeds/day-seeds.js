@@ -1,4 +1,4 @@
-const Day = require('../models/Day');
+const {Day} = require('../models/index.js');
 
 const dayData = [
     {

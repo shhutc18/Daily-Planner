@@ -31,20 +31,20 @@ User.init(
         allowNull: false
         },
     },
-    {
-        hooks: {
-            async beforeCreate(newUserData) {
-                const hashedPassword = crypto.createHash('sha256').update(newUserData.password).digest('hex');
-                newUserData.password = hashedPassword;
-                return newUserData;
-            },
-            async beforeUpdate(updatedUserData) {
-                const hashedPassword = crypto.createHash('sha256').update(updatedUserData.password).digest('hex');
-                updatedUserData.password = hashedPassword;
-                return updatedUserData;
-            }
-        }
-    },
+    // {
+    //     hooks: {
+    //         async beforeCreate(newUserData) {
+    //             const hashedPassword = crypto.createHash('sha256').update(newUserData.password).digest('hex');
+    //             newUserData.password = hashedPassword;
+    //             return newUserData;
+    //         },
+    //         async beforeUpdate(updatedUserData) {
+    //             const hashedPassword = crypto.createHash('sha256').update(updatedUserData.password).digest('hex');
+    //             updatedUserData.password = hashedPassword;
+    //             return updatedUserData;
+    //         }
+    //     }
+    // },
     {
         sequelize,
         timestamps: false,

@@ -34,7 +34,7 @@ Todo.init(
         timestamps: false,
         freezeTableName: true,
         underscored: true,
-        modelName: 'Todo'
+        modelName: 'todo'
     }
 );
 
