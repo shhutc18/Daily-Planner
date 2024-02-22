@@ -17,7 +17,7 @@ User.init(
         allowNull: false
         },
         password: {
-        type: DataTypes.STRING,
+        type: DataTypes.STRING(256),
         allowNull: false,
         validate: {
             len: [4]
@@ -39,20 +39,20 @@ User.init(
     {
         hooks: {
             async beforeCreate(newUserData) {
-                const salt = crypto.randomBytes(16).toString('hex');
-                const hashedPassword = await pbkdf2(newUserData.password, salt, 310000, 32, 'sha256');
-                newUserData.password = hashedPassword;
-                newUserData.salt = salt;
-                return newUserData;
+              const salt = crypto.randomBytes(16).toString('hex');
+              const hashedPassword = (await pbkdf2(newUserData.password, salt, 310000, 32, 'sha256')).toString('hex');
+              newUserData.password = hashedPassword;
+              newUserData.salt = salt;
+              return newUserData;
             },
             async beforeUpdate(updatedUserData) {
-                const salt = crypto.randomBytes(16).toString('hex');
-                const hashedPassword = await pbkdf2(updatedUserData.password, salt, 310000, 32, 'sha256');
-                updatedUserData.password = hashedPassword;
-                updatedUserData.salt = salt;
-                return updatedUserData;
+              const salt = crypto.randomBytes(16).toString('hex');
+              const hashedPassword = (await pbkdf2(updatedUserData.password, salt, 310000, 32, 'sha256')).toString('hex');
+              updatedUserData.password = hashedPassword;
+              updatedUserData.salt = salt;
+              return updatedUserData;
             }
-        },
+          },
         sequelize,
         timestamps: false,
         freezeTableName: true,

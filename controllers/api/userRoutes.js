@@ -24,14 +24,24 @@ router.post('/user', function(req, res) {
 });
 
 // PUT request to update a User
-router.put('/user/:id', function(req, res) {
-  User.update(req.body, {
-    where: {
-      id: req.params.id
+router.put('/user/:id', async function(req, res) {
+  try {
+    // Find the user to update
+    const user = await User.findOne({ where: { id: req.params.id } });
+    // 404 catch
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
     }
-  })
-  .then(updatedUser => res.json(updatedUser))
-  .catch(err => res.status(500).json(err));
+    // Update the user
+    user.set(req.body);
+    // Save the updated user (triggering the beforeUpdate hook)
+    const updatedUser = await user.save();
+    // Respond with the updated user
+    res.json(updatedUser);
+
+  } catch (err) {
+    res.status(500).json(err);
+  }
 });
 
 // DELETE request to delete a User

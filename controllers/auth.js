@@ -14,7 +14,7 @@ passport.use(new LocalStrategy(async function verify(username, password, cb) {
     if (!userData) { return cb(null, false, { message: 'Incorrect username or password.' }); }
 
     // hashing password
-    const hashedPassword = await pbkdf2(password, userData.salt, 310000, 32, 'sha256');
+    const hashedPassword = (await pbkdf2(password, userData.salt, 310000, 32, 'sha256')).toString('hex');
     //const hashedPassword = crypto.createHash('sha256').update(password).digest('hex');
 
     // comparing hashed password with db
