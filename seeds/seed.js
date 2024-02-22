@@ -1,6 +1,7 @@
 const seedUsers = require('./user-seeds');
 const seedEvents = require('./event-seeds');
-const seedTasks = require('./task-seeds');
+const seedTodos = require('./todo-seeds');
+const seedDays = require('./day-seeds');
 
 const sequelize = require('../config/connection');
 
@@ -11,11 +12,14 @@ const seedAll = async () => {
   await seedUsers();
   console.log('\n----- USERS SEEDED -----\n');
 
+  await seedDays();
+  console.log('\n----- DAYS SEEDED -----\n');
+
   await seedEvents();
   console.log('\n----- EVENTS SEEDED -----\n');
 
-  await seedTasks();
-  console.log('\n----- TASKS SEEDED -----\n');
+  await seedTodos();
+  console.log('\n----- TODOS SEEDED -----\n');
 
   process.exit(0);
 };

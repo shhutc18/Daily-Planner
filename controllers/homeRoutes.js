@@ -1,14 +1,9 @@
 const router = require('express').Router();
-const withAuth = require('./auth');
+const ensureAuthenticated = require('../utils/auth');
 
 
-router.get('/', withAuth, async (req, res) => {
+router.get('/', ensureAuthenticated, async (req, res) => {
   try {
-    // TODO: retrieve the user's data from the database
-    // TODO: send the user's data to the homepage template
-    // res.render('homepage');
-
-    //HACK: temporarily sending the random user data to the homepage template
     const userData = {
       username: 'Test User'
     };
@@ -32,10 +27,10 @@ router.get('/', withAuth, async (req, res) => {
 
 router.get('/login', (req, res) => {
   // If the user is already logged in, redirect the request to another route
-  if (req.session.logged_in) {
-    res.redirect('/');
-    return;
-  }
+  // if (req.session.logged_in) {
+  //   res.redirect('/');
+  //   return;
+  // }
 
   // Otherwise, send the login page
   res.render('login');

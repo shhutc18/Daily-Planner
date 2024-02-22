@@ -5,6 +5,7 @@ const session = require('express-session');
 const exphbs = require('express-handlebars');
 const routes = require('./controllers');
 const helpers = require('./utils/helpers');
+const passport = require('passport');
 
 const sequelize = require('./config/connection');
 
@@ -18,17 +19,15 @@ const hbs = exphbs.create({ helpers });
 
 // Configuring and linking a session object with the sequelize store
 const sess = {
-  secret: 'Super secret secret',
-  cookie: {},
+  secret: 'Super secret daily planner key',
   resave: false,
-  saveUninitialized: true,
-  store: new SequelizeStore({
-    db: sequelize
-  })
+  saveUninitialized: false,
 };
 
 // Adding express-session and storing as Express.js middleware
 app.use(session(sess));
+app.use(passport.initialize());
+app.use(passport.session());
 
 app.engine('handlebars', hbs.engine);
 app.set('view engine', 'handlebars');
@@ -39,17 +38,9 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(routes);
 
-// Passport functionality v
-
-// var app = express();
-
 var indexRouter = require('./controllers/index');
 
 app.use('/', indexRouter);
-
-// Passport functionality ^
-
-
 
 sequelize.sync({ force: false }).then(() => {
   app.listen(PORT, () => console.log('Now listening'));
