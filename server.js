@@ -12,9 +12,6 @@ const sequelize = require('./config/connection');
 // Creating a new sequelize store using the express-session package
 const SequelizeStore = require('connect-session-sequelize')(session.Store);
 
-// Creating a new SQLite store using the express-session package
-const SQLiteStore = require('connect-sqlite3')(session);
-
 const app = express();
 const PORT = process.env.PORT || 3001;
 
@@ -25,7 +22,9 @@ const sess = {
   secret: 'Super secret daily planner key',
   resave: false,
   saveUninitialized: false,
-  store: new SQLiteStore({ db: 'sessions.db', dir: './var/dv' })
+  store: new SequelizeStore({
+    db: sequelize
+  })
 };
 
 // Adding express-session and storing as Express.js middleware
