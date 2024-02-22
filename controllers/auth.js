@@ -9,15 +9,20 @@ const pbkdf2 = util.promisify(crypto.pbkdf2);
 
 passport.use(new LocalStrategy(async function verify(username, password, cb) {
   try {
+    // fetching user from db
     const userData = await User.findOne({where: {name: username} });
     if (!userData) { return cb(null, false, { message: 'Incorrect username or password.' }); }
 
-    // const hashedPassword = await pbkdf2(password, userData.salt, 310000, 32, 'sha256');
-    const hashedPassword = crypto.createHash('sha256').update(password).digest('hex');
+    // hashing password
+    const hashedPassword = await pbkdf2(password, userData.salt, 310000, 32, 'sha256');
+    //const hashedPassword = crypto.createHash('sha256').update(password).digest('hex');
+
+    // comparing hashed password with db
     if (!crypto.timingSafeEqual(Buffer.from(userData.password, 'hex'), hashedPassword)) {
       return cb(null, false, { message: 'Incorrect username or password.' });
     }
     return cb(null, userData);
+
   } catch (err) {
     return cb(err);
   }
