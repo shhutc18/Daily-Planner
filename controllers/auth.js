@@ -12,8 +12,9 @@ passport.use(new LocalStrategy(async function verify(username, password, cb) {
     const userData = await User.findOne({where: {name: username} });
     if (!userData) { return cb(null, false, { message: 'Incorrect username or password.' }); }
 
-    const hashedPassword = await pbkdf2(password, userData.salt, 310000, 32, 'sha256');
-    if (!crypto.timingSafeEqual(Buffer.from(userData.hashed_password, 'hex'), hashedPassword)) {
+    // const hashedPassword = await pbkdf2(password, userData.salt, 310000, 32, 'sha256');
+    const hashedPassword = crypto.createHash('sha256').update(password).digest('hex');
+    if (!crypto.timingSafeEqual(Buffer.from(userData.password, 'hex'), hashedPassword)) {
       return cb(null, false, { message: 'Incorrect username or password.' });
     }
     return cb(null, userData);
@@ -40,7 +41,8 @@ router.get('/login', function(req, res, next) {
 
 router.post('/login/password', passport.authenticate('local', {
   successRedirect: '/',
-  failureRedirect: '/login'
+  failureRedirect: '/login',
+  failureMessage: true
 }));
 
 module.exports = router;

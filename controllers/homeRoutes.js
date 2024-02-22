@@ -2,7 +2,7 @@ const router = require('express').Router();
 const ensureAuthenticated = require('../utils/auth');
 
 
-router.get('/', ensureAuthenticated, async (req, res) => {
+router.get('/', async (req, res) => {
   try {
     const userData = {
       username: 'Test User'

@@ -22,7 +22,7 @@ const sess = {
   secret: 'Super secret daily planner key',
   cookie: { secure: false },
   resave: false,
-  saveUninitialized: true,
+  saveUninitialized: false,
   store: new SequelizeStore({
     db: sequelize
   })
@@ -32,8 +32,7 @@ const sess = {
 app.use(session(sess));
 
 // Passport middleware
-app.use(passport.initialize());
-app.use(passport.session());
+app.use(passport.authenticate('session'));
 
 app.use((req, res, next) => {
   console.log('User: ', req.user);
