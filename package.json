@@ -10,12 +10,16 @@
   "license": "ISC",
   "dependencies": {
     "connect-session-sequelize": "^7.1.7",
+    "connect-sqlite3": "^0.9.13",
     "crypto": "^1.0.1",
     "dotenv": "^16.4.4",
     "express": "^4.18.2",
     "express-handlebars": "^7.1.2",
     "express-session": "^1.18.0",
     "mysql2": "^3.9.1",
-    "sequelize": "^6.37.0"
+    "passport": "^0.7.0",
+    "passport-local": "^1.0.0",
+    "sequelize": "^6.37.0",
+    "sqlite3": "^5.1.7"
   }
 }

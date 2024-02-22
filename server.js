@@ -20,18 +20,26 @@ const hbs = exphbs.create({ helpers });
 // Configuring and linking a session object with the sequelize store
 const sess = {
   secret: 'Super secret daily planner key',
+  cookie: { secure: false },
   resave: false,
-  saveUninitialized: false,
+  saveUninitialized: true,
+  store: new SequelizeStore({
+    db: sequelize
+  })
 };
 
 // Adding express-session and storing as Express.js middleware
 app.use(session(sess));
+
+// Passport middleware
 app.use(passport.initialize());
 app.use(passport.session());
 
+// Registering the handlebars view engine with Express.js
 app.engine('handlebars', hbs.engine);
 app.set('view engine', 'handlebars');
 
+// Middleware to parse incoming JSON data
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
