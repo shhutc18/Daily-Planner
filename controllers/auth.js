@@ -18,7 +18,7 @@ passport.use(new LocalStrategy(async function verify(username, password, cb) {
     //const hashedPassword = crypto.createHash('sha256').update(password).digest('hex');
 
     // comparing hashed password with db
-    if (!crypto.timingSafeEqual(Buffer.from(userData.password, 'hex'), hashedPassword)) {
+    if (!crypto.timingSafeEqual(Buffer.from(userData.password, 'hex'), Buffer.from(hashedPassword, 'hex'))) {
       return cb(null, false, { message: 'Incorrect username or password.' });
     }
     return cb(null, userData);
@@ -35,9 +35,12 @@ passport.serializeUser(function(user, done) {
 });
 
 passport.deserializeUser(async function(id, done) {
-  process.nextTick(function() {
-    return cb(null, user);
-  });
+  try {
+    const user = await User.findByPk(id);
+    done(null, user);
+  } catch (err) {
+    done(err);
+  }
 });
 
 router.get('/login', function(req, res, next) {
