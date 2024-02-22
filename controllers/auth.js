@@ -23,16 +23,15 @@ passport.use(new LocalStrategy(async function verify(username, password, cb) {
 }));
 
 passport.serializeUser(function(user, done) {
-  done(null, user.id);
+  process.nextTick(function() {
+    cb(null, { id: user.id, username: user.username });
+  });
 });
 
 passport.deserializeUser(async function(id, done) {
-  try {
-    const user = await User.findByPk(id);
-    done(null, user);
-  } catch (err) {
-    done(err);
-  }
+  process.nextTick(function() {
+    return cb(null, user);
+  });
 });
 
 router.get('/login', function(req, res, next) {
