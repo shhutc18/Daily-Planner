@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
-var Event = require('../models/Events');
+var { Event } = require('../../models/index.js');
+
 
 // GET request to get one Event model
 router.get('/event/:id', function(req, res) {

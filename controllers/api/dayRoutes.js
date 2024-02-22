@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
-var Day = require('../models/Day');
+var { Day } = require('../../models/index.js');
+
 
 // GET request to get one Day model
 router.get('/day/:id', function(req, res) {
