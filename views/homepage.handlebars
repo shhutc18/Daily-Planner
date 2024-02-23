@@ -48,5 +48,9 @@
     {{!-- Notes --}}
     <section class="w-full p-4">
         <h3 class="text-center text-lg md:text-2xl">Notes</h3>
+        <form action="/save-note" method="post">
+            <textarea name="note" class="w-full p-2 mt-2 border border-black border-opacity-70 rounded" placeholder="Write your note here"></textarea>
+            <button type="submit" class="w-full p-2 mt-2 bg-blue-500 text-white rounded">Save Note</button>
+        </form>
     </section>
 </div>
