@@ -45,7 +45,6 @@ router.get('/', ensureAuthenticated, async (req, res) => {
         day_id: day.id
       }
     });
-    console.log(events);
 
     // searching for the todos in the database
     let todos = await Todo.findAll({
@@ -53,10 +52,9 @@ router.get('/', ensureAuthenticated, async (req, res) => {
         day_id: day.id
       }
     });
-    console.log(todos);
 
     // render the homepage
-    res.render('homepage', { userData, today, formattedDate, day });
+    res.render('homepage', { userData, today, formattedDate, day, events, todos});
 
   } catch (err) {
     res.status(500).json(err);
