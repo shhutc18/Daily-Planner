@@ -7,70 +7,51 @@
     </form>
 </header>
 
+{{!-- Select Day Calender --}}
+<section class="flex align-center p-4 w-full">
+    <form action="/select-day" method="post" class="flex">
+        <button type="submit" class="w-full bg-neutral-800 text-neutral-200 px-3 py-1 rounded mx-1">Select Day</button>
+        <input type="date" name="selectedDay" id="selectedDay" class="w-full px-3 py-1 border border-black border-opacity-70 rounded mx-1" value="{{formattedDate}}">
+        <label for="selectedDay" class="w-full mx-1">Switch days to see what events are going on!</label>
+    </form>
+</section>
 
-{{!-- container --}}
-<div class="container flex flex-col m-auto">
-    {{!-- Select Day Calender --}}
-    <section class="flex align-center p-4 w-full">
-        <form action="/select-day" method="post" class="flex">
-            <button type="submit" class="w-full bg-neutral-800 text-neutral-200 px-3 py-1 rounded mx-1">Select Day</button>
-            <input type="date" name="selectedDay" id="selectedDay" class="w-full px-3 py-1 border border-black border-opacity-70 rounded mx-1" value="{{formattedDate}}">
-            <label for="selectedDay" class="w-full mx-1">Switch days to see what events are going on!</label>
-        </form>
-    </section>
+{{!-- Title --}}
+<h3 class="text-start text-lg md:text-2xl mx-4 underline">Day Overview</h3>
 
-    {{!-- Calender / Time Segments --}}
-    <section class="w-full p-4">
-        <div class="flex justify-between m-1">
+{{!-- Container for calender, todos, & notes --}}
+<div class="container flex flex-row sm:flex-col m-auto">
+
+    {{!-- Events --}}
+    <section class="flex justify-center p-4 border-2 border-black">
+        <div class="flex flex-col w-fit mx-4 mt-2">
+            {{!-- New Event Link --}}
             <a href="/event">
-                <p class="bg-neutral-800 text-neutral-200 px-3 py-1 rounded">Create Event</p>
+                <p class="bg-neutral-800 text-neutral-200 rounded w-fit mx-2 p-2">Create New Event</p>
             </a>
-            <h3 class="text-center text-lg md:text-2xl">Your daily overview</h3>
+            {{!-- Event Cards --}}
+            {{#each events as |event|}}
+                <div class="flex flex-col text-start text-lg bg-white rounded m-2 p-3 w-full">
+                    <p class="text-xl font-bold text-center">{{event.event_name}}</p>
+                    <p>Starts at: {{event.event_time}}</p>
+                    <p>Goes on for: {{event.event_length}} hours</p>
+                    <p>Takes place at <span class="underline">{{event.event_location}}</span></p>
+                </div>
+            {{/each}}
         </div>
-        {{#each events as |event|}}
-            <div class="flex justify-between m-1">
-                <p>{{event.event_name}}</p>
-            </div>
-        {{/each}}
-        {{!-- <ul class="border border-black border-opacity-70 opacity-70 rounded">
-            <li class="p-1">1am</li>
-            <li class="p-1">2am</li>
-            <li class="p-1">3am</li>
-            <li class="p-1">4am</li>
-            <li class="p-1">5am</li>
-            <li class="p-1">6am</li>
-            <li class="p-1">7am</li>
-            <li class="p-1">8am</li>
-            <li class="p-1">9am</li>
-            <li class="p-1">10am</li>
-            <li class="p-1">11am</li>
-            <li class="p-1">12am</li>
-            <li class="p-1">1pm</li>
-            <li class="p-1">2pm</li>
-            <li class="p-1">3pm</li>
-            <li class="p-1">4pm</li>
-            <li class="p-1">5pm</li>
-            <li class="p-1">6pm</li>
-            <li class="p-1">7pm</li>
-            <li class="p-1">8pm</li>
-            <li class="p-1">9pm</li>
-            <li class="p-1">10pm</li>
-            <li class="p-1">11pm</li>
-            <li class="p-1">12pm</li>
-        </ul> --}}
     </section>
 
-    {{!-- To-Do List --}}
-    <section class="w-full p-4">
+    {{!-- To-Do --}}
+    <section class=" p-4 border-2 border-black">
         <h3 class="text-center text-lg md:text-2xl">To-Do List</h3>
 
-    {{!-- Form for creating new tasks --}}
+        {{!-- Form for creating new tasks --}}
         <form id="new-task-form" class="text-center" action="/new-task" method="post">
             <input type="text" id="new-task" placeholder="New task" required />
             <button type="submit">Add Task</button>
         </form>
 
-    {{!-- List of tasks --}}
+        {{!-- List of tasks --}}
         <ul id="task-list">
             {{#each tasks}}
                 <li>
@@ -82,7 +63,7 @@
     </section>
 
     {{!-- Notes --}}
-    <section class="w-full p-4">
+    <section class=" p-4 border-2 border-black">
         <h3 class="text-center text-lg md:text-2xl">Notes</h3>
         <form action="/save-note" method="post">
             <textarea name="note" class="w-full p-2 mt-2 border border-black border-opacity-70 rounded" placeholder="Write your note here"></textarea>
