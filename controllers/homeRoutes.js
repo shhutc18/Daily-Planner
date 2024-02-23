@@ -45,6 +45,8 @@ router.get('/', ensureAuthenticated, async (req, res) => {
         day_id: day.id
       }
     });
+    events = events.map(event => event.get({ plain: true }));
+    console.log(events);
 
     // searching for the todos in the database
     let todos = await Todo.findAll({

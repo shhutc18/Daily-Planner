@@ -27,7 +27,12 @@
             </a>
             <h3 class="text-center text-lg md:text-2xl">Your daily overview</h3>
         </div>
-        <ul class="border border-black border-opacity-70 opacity-70 rounded">
+        {{#each events as |event|}}
+            <div class="flex justify-between m-1">
+                <p>{{event.event_name}}</p>
+            </div>
+        {{/each}}
+        {{!-- <ul class="border border-black border-opacity-70 opacity-70 rounded">
             <li class="p-1">1am</li>
             <li class="p-1">2am</li>
             <li class="p-1">3am</li>
@@ -52,7 +57,7 @@
             <li class="p-1">10pm</li>
             <li class="p-1">11pm</li>
             <li class="p-1">12pm</li>
-        </ul>
+        </ul> --}}
     </section>
 
     {{!-- To-Do List --}}
