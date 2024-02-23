@@ -34,4 +34,19 @@ router.get('/event', ensureAuthenticated, async (req, res) => {
   }
 });
 
+router.post('/event', ensureAuthenticated, async (req, res) => {
+  try {
+    const userData = req.session.passport.user;
+    const eventData = {
+      title: req.body.title,
+      description: req.body.description,
+      date: req.body.date,
+      time: req.body.time
+    }
+
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+
 module.exports = router;

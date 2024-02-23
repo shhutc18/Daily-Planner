@@ -5,18 +5,18 @@
 <form action="/event" method="post" id="eventForm" class="p-4 flex-col bg-white m-auto w-fit rounded">
   <div class="flex p-2 justify-end">
     <label for="event_name">Event Name:</label>
-    <input class="ms-2 rounded" type="text" id="username" name="username" />
+    <input class="ms-2 rounded" type="text" id="event_name" name="event_name" />
   </div>
   <div class="flex p-2 justify-end">
-    <label for="event_name">Event Time:</label>
-    <input class="ms-2 rounded" type="time" id="username" name="username" />
+    <label for="event_time">Event Time:</label>
+    <input class="ms-2 rounded" type="time" id="event_time" name="event_time" />
   </div>
   <div class="flex p-2 justify-end">
-    <label for="event_name">Event Location:</label>
-    <input class="ms-2 rounded" type="text" id="username" name="username" />
+    <label for="event_location">Event Location:</label>
+    <input class="ms-2 rounded" type="text" id="event_location" name="event_location" />
   </div>
     <div class="flex p-2 justify-end">
-        <label for="event_name">Event Length:</label>
+        <label for="event_length">Event Length:</label>
         <select class="ms-2 rounded" id="event_length" name="event_length">
             <option value="1">1 Hour</option>
             <option value="2">2 Hour</option>
@@ -29,8 +29,8 @@
         </select>
     </div>
   <div class="flex p-2 justify-end">
-    <label for="event_name">Day:</label>
-    <input class="ms-2 rounded" type="date" id="username" name="username" />
+    <label for="date">Day:</label>
+    <input class="ms-2 rounded" type="date" id="date" name="date" />
   </div>
   <div class="flex p-2 justify-end">
     <button class="bg-neutral-800 text-neutral-200 px-3 py-1 rounded" type="submit">Create Event</button>
