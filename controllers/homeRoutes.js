@@ -121,33 +121,31 @@ router.post('/event', ensureAuthenticated, async (req, res) => {
 
 // POST /new-todo - creates a new todo
 router.post('/new-todo', async (req, res) => {
+  console.log(req.body);
   try {
-    const day = Day.findOne({
-      where: { date: req.body.date, user_id: req.user.id}
+    // find the day
+    const day = await Day.findOne({
+      where: { date: new Date(req.body.todoDay), user_id: req.user.id}
     });
-    let dayId;
-    // if the day does not exist, create a new day
-    if (!day || day == null) {
-      const newDay = await Day.create({ date: req.body.date, user_id: userData.id });
-      dayId = newDay.id;
-      console.log("new day created");
-    } else {
-      dayId = day.id;
-      console.log("day already exists");
+
+    // 404 if day not found
+    if (!day) {
+      res.status(404).json({ message: 'There was an error creating the todo: day not found' });
+      return;
     }
+
     // Create a new todo
     await Todo.create({
-      task: req.body.task,
+      todo_name: req.body.todo_name,
       completed: false,
-      day_id: dayId,
-      // Add other fields as necessary
+      day_id: day.id
     });
 
     // Redirect to the homepage
-    res.redirect('/');
-  } catch (error) {
-    console.error(error);
-    res.status(500).send('An error occurred while trying to create a new task');
+    res.status(200).redirect('/');
+
+  } catch (err) {
+    res.status(500).json(err);
   }
 });
 

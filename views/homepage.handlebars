@@ -54,7 +54,8 @@
 
                 {{!-- Form for creating new tasks --}}
                 <form id="new-task-form" class="text-center" action="/new-todo" method="post">
-                    <input type="text" id="new-task" placeholder="New task" required />
+                    <input type="date" name="todoDay" id="todoDay" value="{{formattedDate}}" hidden>
+                    <input type="text" name="todo_name" id="todo_name" placeholder="New task" required />
                     <button type="submit">Add Task</button>
                 </form>
 
