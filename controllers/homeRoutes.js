@@ -5,19 +5,56 @@ const e = require('express');
 
 router.get('/', ensureAuthenticated, async (req, res) => {
   try {
+    // Getting the user data from the session
     const userData = req.session.passport.user;
 
-    const date = new Date();
-    let day = date.getDate();
+    // Creating the date object for today
+    let date = new Date();
+    date.setHours(0, 0, 0, 0);
     let month = date.getMonth() + 1;
-    let year = date.getFullYear();
+    if (month < 10) month = '0' + month;
     let today = {
-      day: day,
+      day: date.getDate(),
       month: month,
-      year: year
+      year: date.getFullYear()
     }
 
-    res.render('homepage', { userData, today });
+    // formatting the date to match the date in the database
+    let formattedDate = `${today.year}-${today.month}-${today.day}`;
+
+    // searching for the day in the database
+    let day = await Day.findOne({
+      where: {
+        date: new Date(formattedDate),
+        user_id: userData.id
+      }
+    });
+    // If the day does not exist, create a new day
+    if (day == null) {
+      console.log("day does not exist");
+      const newDay = await Day.create({
+        date: formattedDate,
+        user_id: userData.id
+      });
+      day = newDay;
+    }
+
+    // searching for the events in the database
+    let events = await Event.findAll({
+      where: {
+        day_id: day.id
+      }
+    });
+
+    // searching for the todos in the database
+    let todos = await Todo.findAll({
+      where: {
+        day_id: day.id
+      }
+    });
+
+    // render the homepage
+    res.render('homepage', { userData, today, formattedDate, day, events, todos});
 
   } catch (err) {
     res.status(500).json(err);
