@@ -40,9 +40,14 @@ router.post('/event', ensureAuthenticated, async (req, res) => {
   try {
     const userData = req.user;
 
+    console.log(req.body.date);
+
+    let formattedDate = new Date(req.body.date);
+    console.log(formattedDate);
+
     let day = await Day.findOne({
       where: {
-        date: req.body.date,
+        date: formattedDate,
         user_id: userData.id
       }
     });
@@ -55,8 +60,15 @@ router.post('/event', ensureAuthenticated, async (req, res) => {
       day = newDay;
     }
 
+    const newEvent = await Event.create({
+      event_name: req.body.event_name,
+      event_time: req.body.event_time,
+      event_location: req.body.event_location,
+      event_length: req.body.event_length,
+      day_id: day.id
+    });
 
-    res.status(200).json(day);
+    res.status(200).redirect('/');
 
   } catch (err) {
     res.status(500).json(err);
