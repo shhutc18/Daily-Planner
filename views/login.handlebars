@@ -2,14 +2,14 @@
 <h1 class="font-bold text-lg md:text-2xl text-center p-4">Login</h1>
 </header>
 
-<form action="/login/password" method="post" id="loginForm" class="p-4 flex-col bg-white m-auto w-fit rounded">
+<form action="/login" method="post" id="loginForm" class="p-4 flex-col bg-white m-auto w-fit rounded">
   <div class="flex p-2 justify-end">
     <label for="username">Email:</label>
-    <input class="ms-2 rounded" type="text" id="username" />
+    <input class="ms-2 rounded" type="text" id="username" name="username" />
   </div>
   <div class="flex p-2 justify-end">
-    <label for="current-password">Password:</label>
-    <input class="ms-2 rounded border-black" type="password" id="current-password" />
+    <label for="password">Password:</label>
+    <input class="ms-2 rounded border-black" type="password" id="password" name="password" />
   </div>
   <div class="flex p-2 justify-end">
     <button class="bg-neutral-800 text-neutral-200 px-3 py-1 rounded" type="submit">Login</button>

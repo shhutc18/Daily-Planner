@@ -10,7 +10,7 @@ const pbkdf2 = util.promisify(crypto.pbkdf2);
 passport.use(new LocalStrategy(async function verify(username, password, cb) {
   try {
     // fetching user from db
-    const userData = await User.findOne({where: {name: username} });
+    const userData = await User.findOne({where: {username: username} });
     if (!userData) { return cb(null, false, { message: 'Incorrect username or password.' }); }
 
     // hashing password
@@ -30,13 +30,13 @@ passport.use(new LocalStrategy(async function verify(username, password, cb) {
 
 passport.serializeUser(function(user, done) {
   process.nextTick(function() {
-    cb(null, { id: user.id, username: user.username });
+    done(null, { id: user.id, username: user.username });
   });
 });
 
-passport.deserializeUser(async function(id, done) {
+passport.deserializeUser(async function(username, done) {
   try {
-    const user = await User.findByPk(id);
+    const user = await User.findByPk(username.id);
     done(null, user);
   } catch (err) {
     done(err);
@@ -47,7 +47,7 @@ router.get('/login', function(req, res, next) {
   res.render('login');
 });
 
-router.post('/login/password', passport.authenticate('local', {
+router.post('/login', passport.authenticate('local', {
   successRedirect: '/',
   failureRedirect: '/login',
   failureMessage: true
