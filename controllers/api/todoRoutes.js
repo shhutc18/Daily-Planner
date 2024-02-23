@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-var Todo = require('../models/Todo');
+var { Todo } = require('../../models/index.js');
 
 // GET request to get one Todo model
 router.get('/todo/:id', function(req, res) {

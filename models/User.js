@@ -2,6 +2,7 @@ const { Model, DataTypes } = require('sequelize');
 const sequelize = require('../config/connection');
 class User extends Model {}
 const crypto = require('crypto');
+const pbkdf2 = require('util').promisify(crypto.pbkdf2);
 
 User.init(
     {
@@ -16,11 +17,15 @@ User.init(
         allowNull: false
         },
         password: {
-        type: DataTypes.STRING,
+        type: DataTypes.STRING(256),
         allowNull: false,
         validate: {
             len: [4]
         }
+        },
+        salt: {
+        type: DataTypes.STRING,
+        allowNull: false
         },
         // hashed_password: {
         // type: DataTypes.STRING,
@@ -34,16 +39,20 @@ User.init(
     {
         hooks: {
             async beforeCreate(newUserData) {
-                const hashedPassword = crypto.createHash('sha256').update(newUserData.password).digest('hex');
-                newUserData.password = hashedPassword;
-                return newUserData;
+              const salt = crypto.randomBytes(16).toString('hex');
+              const hashedPassword = (await pbkdf2(newUserData.password, salt, 310000, 32, 'sha256')).toString('hex');
+              newUserData.password = hashedPassword;
+              newUserData.salt = salt;
+              return newUserData;
             },
             async beforeUpdate(updatedUserData) {
-                const hashedPassword = crypto.createHash('sha256').update(updatedUserData.password).digest('hex');
-                updatedUserData.password = hashedPassword;
-                return updatedUserData;
+              const salt = crypto.randomBytes(16).toString('hex');
+              const hashedPassword = (await pbkdf2(updatedUserData.password, salt, 310000, 32, 'sha256')).toString('hex');
+              updatedUserData.password = hashedPassword;
+              updatedUserData.salt = salt;
+              return updatedUserData;
             }
-        },
+          },
         sequelize,
         timestamps: false,
         freezeTableName: true,

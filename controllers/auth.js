@@ -9,26 +9,34 @@ const pbkdf2 = util.promisify(crypto.pbkdf2);
 
 passport.use(new LocalStrategy(async function verify(username, password, cb) {
   try {
-    const userData = await User.findOne({where: {name: username} });
+    // fetching user from db
+    const userData = await User.findOne({where: {username: username} });
     if (!userData) { return cb(null, false, { message: 'Incorrect username or password.' }); }
 
-    const hashedPassword = await pbkdf2(password, userData.salt, 310000, 32, 'sha256');
-    if (!crypto.timingSafeEqual(Buffer.from(userData.hashed_password, 'hex'), hashedPassword)) {
+    // hashing password
+    const hashedPassword = (await pbkdf2(password, userData.salt, 310000, 32, 'sha256')).toString('hex');
+    //const hashedPassword = crypto.createHash('sha256').update(password).digest('hex');
+
+    // comparing hashed password with db
+    if (!crypto.timingSafeEqual(Buffer.from(userData.password, 'hex'), Buffer.from(hashedPassword, 'hex'))) {
       return cb(null, false, { message: 'Incorrect username or password.' });
     }
     return cb(null, userData);
+
   } catch (err) {
     return cb(err);
   }
 }));
 
 passport.serializeUser(function(user, done) {
-  done(null, user.id);
+  process.nextTick(function() {
+    done(null, { id: user.id, username: user.username });
+  });
 });
 
-passport.deserializeUser(async function(id, done) {
+passport.deserializeUser(async function(username, done) {
   try {
-    const user = await User.findByPk(id);
+    const user = await User.findByPk(username.id);
     done(null, user);
   } catch (err) {
     done(err);
@@ -39,9 +47,17 @@ router.get('/login', function(req, res, next) {
   res.render('login');
 });
 
-router.post('/login/password', passport.authenticate('local', {
+router.post('/login', passport.authenticate('local', {
   successRedirect: '/',
-  failureRedirect: '/login'
+  failureRedirect: '/login',
+  failureMessage: true
 }));
+
+router.post('/logout', function(req, res, next){
+  req.logout(function(err) {
+    if (err) { return next(err); }
+    res.redirect('/login');
+  });
+});
 
 module.exports = router;

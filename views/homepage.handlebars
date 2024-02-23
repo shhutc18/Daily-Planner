@@ -2,7 +2,9 @@
 <header class="flex items-center justify-around p-2">
     <h1 class="font-bold text-lg md:text-2xl text-center">{{ today.month }}/{{today.day}}/{{today.year}}</h1>
     <h2 class="opacity-70 text-sm md:text-base">Welcome, {{ userData.username }}</h2>
-    <button class="opacity-70 text-sm md:text-base">Logout</button>
+    <form action="/logout" method="post">
+        <button type="submit" class="opacity-70 text-sm md:text-base">Logout</button>
+    </form>
 </header>
 
 {{!-- container --}}
