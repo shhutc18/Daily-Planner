@@ -53,6 +53,14 @@ router.post('/login', passport.authenticate('local', {
   failureMessage: true
 }));
 
+router.get('/register', function(req, res, next) {
+  res.render('registeruser');
+});
+
+router.post('/register', function(req, res, next) {
+  
+});
+
 router.post('/logout', function(req, res, next){
   req.logout(function(err) {
     if (err) { return next(err); }
