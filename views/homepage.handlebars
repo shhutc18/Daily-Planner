@@ -31,9 +31,11 @@
         {{!-- Events --}}
         <section class="flex justify-center p-4">
             <div class="flex flex-col w-fit mx-4 mt-2">
+                <h4 class="text-center text-lg md:text-2xl">Events</h4>
+
                 {{!-- New Event Link --}}
-                <a href="/event">
-                    <p class="bg-neutral-800 text-neutral-200 rounded w-fit mx-2 p-2">Create New Event</p>
+                <a href="/event" class="flex justify-end">
+                    <p class="bg-neutral-800 text-neutral-200 rounded w-full m-2 p-1 text-center">Create New Event</p>
                 </a>
                 {{!-- Event Cards --}}
                 {{#each events as |event|}}
@@ -50,13 +52,13 @@
         {{!-- To-Do --}}
         <section class="flex justify-center p-4">
             <div class="flex flex-col w-fit mx-4 mt-2">
-                <h3 class="text-center text-lg md:text-2xl">To-Do List</h3>
+                <h4 class="text-center text-lg md:text-2xl">To-Do List</h4>
 
                 {{!-- Form for creating new tasks --}}
-                <form id="new-task-form" class="text-center" action="/new-todo" method="post">
+                <form id="new-task-form" class="text-center m-2" action="/new-todo" method="post">
                     <input type="date" name="todoDay" id="todoDay" value="{{formattedDate}}" hidden>
-                    <input type="text" name="todo_name" id="todo_name" placeholder="New task" required />
-                    <button type="submit">Add Task</button>
+                    <input type="text" name="todo_name" id="todo_name" placeholder="New task" class="py-1 rounded" required />
+                    <button type="submit" class="bg-neutral-800 text-neutral-200 rounded w-fit mx-2 px-2 py-1">Add Task</button>
                 </form>
 
                 {{!-- List of todos --}}
@@ -74,7 +76,7 @@
         {{!-- Notes --}}
         <section class="flex justify-center p-4 mb-4">
             <div class="flex flex-col w-fit mx-4 mt-2">
-                <h3 class="text-center text-lg md:text-2xl">Notes</h3>
+                <h4 class="text-center text-lg md:text-2xl">Notes</h4>
                 <form action="/save-note" method="post">
                     <textarea name="note" class="w-full p-2 mt-2 border border-black border-opacity-70 rounded" placeholder="Write your note here"></textarea>
                     <button type="submit" class="w-full p-2 mt-2 bg-blue-500 text-white rounded">Save Note</button>
