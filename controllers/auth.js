@@ -53,6 +53,42 @@ router.post('/login', passport.authenticate('local', {
   failureMessage: true
 }));
 
+router.get('/register', function(req, res, next) {
+  res.render('registeruser');
+});
+
+router.post('/register', function(req, res, next) {
+  try {
+    // checking if username and password are not empty
+    if (!req.body.username || !req.body.password) {
+      return res.status(400).json({ message: 'Please enter both username and password' });
+    }
+
+    // checking if user already exists
+    User.findOne({where: {username: req.body.username}})
+      .then(user => {
+        if (user) {
+          return res.status(400).json({ message: 'Username already exists' });
+        }
+
+        // creating user object
+        const userData = {
+          username: req.body.username,
+          password: req.body.password,
+          salt: crypto.randomBytes(16).toString('hex'),
+        };
+        
+        // creating user in db
+        User.create(userData, { fields: ['username', 'password', 'salt'] }, { hooks: true })
+          .then(res.redirect('/login'))
+          .catch(err => res.status(500).json(err));
+      })
+      .catch(err => res.status(500).json(err));
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+
 router.post('/logout', function(req, res, next){
   req.logout(function(err) {
     if (err) { return next(err); }
