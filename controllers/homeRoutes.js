@@ -7,7 +7,8 @@ const e = require('express');
 router.get('/', ensureAuthenticated, async (req, res) => {
   try {
     // Getting the user data from the session
-    const userData = req.session.passport.user;
+    let userData = req.user;
+    userData = userData.get({ plain: true });
 
     // Creating the date object for today
     let date = new Date();
@@ -47,7 +48,6 @@ router.get('/', ensureAuthenticated, async (req, res) => {
       }
     });
     events = events.map(event => event.get({ plain: true }));
-    console.log(events);
 
     // searching for the todos in the database
     let todos = await Todo.findAll({
@@ -56,7 +56,8 @@ router.get('/', ensureAuthenticated, async (req, res) => {
       }
     });
     todos = todos.map(todo => todo.get({ plain: true }));
-    console.log(todos);
+
+    console.log(userData);
 
     // render the homepage
     res.render('homepage', { userData, today, formattedDate, day, events, todos});
@@ -152,8 +153,16 @@ router.post('/new-todo', async (req, res) => {
 // POST /save-note - saves the note property
 router.post('/save-note', ensureAuthenticated, async (req, res) => {
   try {
-    const userData = req.user;
-    res.status(200).json(req.body);
+    console.log(req.body.note);
+    let userData = req.user;
+    userData.notes = req.body.note;
+    await User.update(userData, {
+      where: {
+        id: userData.id
+      }
+    });
+    await userData.save();
+    res.status(200).redirect('/');
   } catch (err) {
     res.status(500).json(err);
   }
