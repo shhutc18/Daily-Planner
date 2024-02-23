@@ -18,7 +18,12 @@
 <div class="container flex flex-col m-auto">
     {{!-- Calender / Time Segments --}}
     <section class="w-full p-4">
-        <h3 class="text-center text-lg md:text-2xl">Your daily overview:</h3>
+        <div class="flex justify-between m-1">
+            <a href="/event">
+                <p class="bg-neutral-800 text-neutral-200 px-3 py-1 rounded">Create Event</p>
+            </a>
+            <h3 class="text-center text-lg md:text-2xl">Your daily overview</h3>
+        </div>
         <ul class="border border-black border-opacity-70 opacity-70 rounded">
             <li class="p-1">1am</li>
             <li class="p-1">2am</li>
@@ -50,6 +55,22 @@
     {{!-- To-Do List --}}
     <section class="w-full p-4">
         <h3 class="text-center text-lg md:text-2xl">To-Do List</h3>
+
+    {{!-- Form for creating new tasks --}}
+        <form id="new-task-form" class="text-center" action="/new-task" method="post">
+            <input type="text" id="new-task" placeholder="New task" required />
+            <button type="submit">Add Task</button>
+        </form>
+
+    {{!-- List of tasks --}}
+        <ul id="task-list">
+            {{#each tasks}}
+                <li>
+                <input type="checkbox" id="task-{{@index}}" {{#if this.completed}}checked{{/if}} />
+                <label for="task-{{@index}}">{{this.task}}</label>
+                </li>
+            {{/each}}
+        </ul>
     </section>
 
     {{!-- Notes --}}

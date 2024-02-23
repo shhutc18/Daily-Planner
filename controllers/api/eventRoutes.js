@@ -30,9 +30,16 @@ router.get('/events', function(req, res) {
 // POST request to add an Event
 router.post('/event', function(req, res) {
   try {
-    Event.create(req.body)
-      .then(newEvent => res.json(newEvent))
-      .catch(err => res.status(500).json(err));
+    const eventData = {
+      event_name : req.body.event_name,
+      event_time : req.body.event_time,
+      event_location : req.body.event_location,
+      event_length : req.body.event_length,
+      day_id : req.body.day_id
+    }
+
+    Event.create(eventData)
+      .then(res.status(200).json({ message: 'Event created' }))
   }
   catch (err) {
     res.status(500).json(err);
