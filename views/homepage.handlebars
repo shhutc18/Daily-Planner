@@ -23,13 +23,13 @@
     </div>
 
     {{!-- Title --}}
-    <h3 class="text-center text-lg md:text-2xl lg:text-4xl m-4 underline">Day Overview</h3>
+    <h3 class="text-center text-xl md:text-2xl lg:text-4xl m-4 underline">Day Overview</h3>
 
     {{!-- Container for calender, todos, & notes --}}
     <div class="container justify-center flex flex-col md:flex-row m-auto">
 
         {{!-- Events --}}
-        <section class="flex justify-center p-4 border-2 border-black">
+        <section class="flex justify-center p-4">
             <div class="flex flex-col w-fit mx-4 mt-2">
                 {{!-- New Event Link --}}
                 <a href="/event">
@@ -48,7 +48,7 @@
         </section>
 
         {{!-- To-Do --}}
-        <section class="flex justify-center p-4 border-2 border-black">
+        <section class="flex justify-center p-4">
             <div class="flex flex-col w-fit mx-4 mt-2">
                 <h3 class="text-center text-lg md:text-2xl">To-Do List</h3>
 
@@ -71,7 +71,7 @@
         </section>
 
         {{!-- Notes --}}
-        <section class="flex justify-center p-4 border-2 border-black">
+        <section class="flex justify-center p-4 mb-4">
             <div class="flex flex-col w-fit mx-4 mt-2">
                 <h3 class="text-center text-lg md:text-2xl">Notes</h3>
                 <form action="/save-note" method="post">
