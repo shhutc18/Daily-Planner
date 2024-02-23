@@ -7,15 +7,18 @@
     </form>
 </header>
 
-<section>
-    <h3 class="text-center text-lg md:text-2xl">Choose day!</h3>
-    <form action="/select-day" method="post">
-        <input type="date" name="selectedDay" class="w-full p-2 mt-2 border border-black border-opacity-70 rounded">
-        <button type="submit" class="w-full p-2 mt-2 bg-blue-500 text-white rounded">Select Day</button>
-</section>
 
 {{!-- container --}}
 <div class="container flex flex-col m-auto">
+    {{!-- Select Day Calender --}}
+    <section class="flex align-center p-4 w-full">
+        <form action="/select-day" method="post" class="flex">
+            <button type="submit" class="w-full bg-neutral-800 text-neutral-200 px-3 py-1 rounded mx-1">Select Day</button>
+            <input type="date" name="selectedDay" class="w-full px-3 py-1 border border-black border-opacity-70 rounded mx-1">
+            <label for="selectedDay" class="w-full mx-1">Switch days to see what events are going on!</label>
+        </form>
+    </section>
+
     {{!-- Calender / Time Segments --}}
     <section class="w-full p-4">
         <div class="flex justify-between m-1">

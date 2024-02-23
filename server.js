@@ -36,6 +36,12 @@ app.use(session(sess));
 app.use(passport.initialize());
 app.use(passport.session());
 
+//debugging middleware
+app.use((req, res, next) => {
+  console.log('User:', req.user);
+  return next();
+});
+
 // Registering the handlebars view engine with Express.js
 app.engine('handlebars', hbs.engine);
 app.set('view engine', 'handlebars');
