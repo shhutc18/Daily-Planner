@@ -4,9 +4,7 @@ const ensureAuthenticated = require('../utils/auth');
 
 router.get('/', ensureAuthenticated, async (req, res) => {
   try {
-    const userData = {
-      username: 'Test User'
-    };
+    const userData = req.session.passport.user;
 
     const date = new Date();
     let day = date.getDate();
