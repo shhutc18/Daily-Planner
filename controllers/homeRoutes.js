@@ -114,4 +114,14 @@ router.post('/save-note', ensureAuthenticated, async (req, res) => {
   }
 });
 
+router.post('/select-day', ensureAuthenticated, async (req, res) => {
+  try {
+    const userData = req.user;
+    console.log(req.body);
+    res.status(200).json(req.body);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+
 module.exports = router;

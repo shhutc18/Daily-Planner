@@ -7,6 +7,13 @@
     </form>
 </header>
 
+<section>
+    <h3 class="text-center text-lg md:text-2xl">Choose day!</h3>
+    <form action="/select-day" method="post">
+        <input type="date" name="selectedDay" class="w-full p-2 mt-2 border border-black border-opacity-70 rounded">
+        <button type="submit" class="w-full p-2 mt-2 bg-blue-500 text-white rounded">Select Day</button>
+</section>
+
 {{!-- container --}}
 <div class="container flex flex-col m-auto">
     {{!-- Calender / Time Segments --}}
