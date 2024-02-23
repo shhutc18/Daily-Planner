@@ -3,6 +3,7 @@ const ensureAuthenticated = require('../utils/auth');
 const { Day, Event, Todo, User } = require('../models');
 const e = require('express');
 
+// GET / - loads the homepage
 router.get('/', ensureAuthenticated, async (req, res) => {
   try {
     // Getting the user data from the session
@@ -54,6 +55,8 @@ router.get('/', ensureAuthenticated, async (req, res) => {
         day_id: day.id
       }
     });
+    todos = todos.map(todo => todo.get({ plain: true }));
+    console.log(todos);
 
     // render the homepage
     res.render('homepage', { userData, today, formattedDate, day, events, todos});
@@ -63,6 +66,7 @@ router.get('/', ensureAuthenticated, async (req, res) => {
   }
 });
 
+// GET /event - loads the event page
 router.get('/event', ensureAuthenticated, async (req, res) => {
   try {
     const userData = req.session.passport.user;
@@ -74,6 +78,8 @@ router.get('/event', ensureAuthenticated, async (req, res) => {
   }
 });
 
+
+// POST /event - creates a new event
 router.post('/event', ensureAuthenticated, async (req, res) => {
   try {
     const userData = req.user;
@@ -113,7 +119,8 @@ router.post('/event', ensureAuthenticated, async (req, res) => {
   }
 });
 
-router.post('/new-task', async (req, res) => {
+// POST /new-todo - creates a new todo
+router.post('/new-todo', async (req, res) => {
   try {
     const day = Day.findOne({
       where: { date: req.body.date, user_id: req.user.id}
@@ -144,6 +151,7 @@ router.post('/new-task', async (req, res) => {
   }
 });
 
+// POST /save-note - saves the note property
 router.post('/save-note', ensureAuthenticated, async (req, res) => {
   try {
     const userData = req.user;
@@ -153,6 +161,7 @@ router.post('/save-note', ensureAuthenticated, async (req, res) => {
   }
 });
 
+// POST /select-day - saves the selected day
 router.post('/select-day', ensureAuthenticated, async (req, res) => {
   try {
     const userData = req.user;

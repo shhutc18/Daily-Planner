@@ -53,17 +53,17 @@
                 <h3 class="text-center text-lg md:text-2xl">To-Do List</h3>
 
                 {{!-- Form for creating new tasks --}}
-                <form id="new-task-form" class="text-center" action="/new-task" method="post">
+                <form id="new-task-form" class="text-center" action="/new-todo" method="post">
                     <input type="text" id="new-task" placeholder="New task" required />
                     <button type="submit">Add Task</button>
                 </form>
 
-                {{!-- List of tasks --}}
+                {{!-- List of todos --}}
                 <ul id="task-list">
-                    {{#each tasks}}
+                    {{#each todos}}
                         <li>
-                        <input type="checkbox" id="task-{{@index}}" {{#if this.completed}}checked{{/if}} />
-                        <label for="task-{{@index}}">{{this.task}}</label>
+                        <input type="checkbox" id="todos-{{@index}}" {{#if this.completed}}checked{{/if}} />
+                        <label for="todos-{{@index}}">{{this.todo_name}}</label>
                         </li>
                     {{/each}}
                 </ul>
