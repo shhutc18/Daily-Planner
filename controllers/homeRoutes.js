@@ -5,21 +5,42 @@ const e = require('express');
 
 router.get('/', ensureAuthenticated, async (req, res) => {
   try {
+    // Getting the user data from the session
     const userData = req.session.passport.user;
 
+    // Getting the current date and formatting it
     const date = new Date();
-    let day = date.getDate();
+    let currentDay = date.getDate();
     let month = date.getMonth() + 1;
     if (month < 10) month = '0' + month;
     let year = date.getFullYear();
     let today = {
-      day: day,
+      day: currentDay,
       month: month,
       year: year
     }
-    let formattedDate = `${year}-${month}-${day}`;
+    let formattedDate = `${year}-${month}-${currentDay}`;
 
-    res.render('homepage', { userData, today, formattedDate });
+    // Get the user's day data
+    let day = await Day.findOne({
+      where: {
+        date: formattedDate,
+        user_id: userData.id
+      }
+    });
+    // If the day does not exist, create a new day
+    if (day == null) {
+      const newDay = await Day.create({
+        date: formattedDate,
+        user_id: userData.id
+      });
+      day = newDay;
+    }
+
+    console.log(day);
+
+    // render the homepage
+    res.render('homepage', { userData, today, formattedDate, day });
 
   } catch (err) {
     res.status(500).json(err);
