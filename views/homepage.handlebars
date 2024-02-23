@@ -1,87 +1,88 @@
-{{!-- Header --}}
-<header class="flex items-center justify-around p-2">
-    <h1 class="font-bold text-lg md:text-2xl text-center">{{ today.month }}/{{today.day}}/{{today.year}}</h1>
-    <h2 class="opacity-70 text-sm md:text-base">Welcome, {{ userData.username }}</h2>
-    <form action="/logout" method="post">
-        <button type="submit" class="opacity-70 text-sm md:text-base">Logout</button>
-    </form>
-</header>
+{{!-- View Container --}}
+<div class="flex flex-col">
+    
+    {{!-- Header --}}
+    <header class="flex items-center justify-around p-2">
+        {{!-- <h1 class="font-bold text-lg md:text-2xl text-center">{{ today.month }}/{{today.day}}/{{today.year}}</h1> --}}
+        <h2 class="opacity-70 text-sm md:text-base">Welcome, {{ userData.username }}</h2>
+        <h1 class="text-sm md:text-base">Daily Planner</h1>
+        <form action="/logout" method="post">
+            <button type="submit" class="opacity-70 text-sm md:text-base">Logout</button>
+        </form>
+    </header>
 
-
-{{!-- container --}}
-<div class="container flex flex-col m-auto">
     {{!-- Select Day Calender --}}
-    <section class="flex align-center p-4 w-full">
-        <form action="/select-day" method="post" class="flex">
-            <button type="submit" class="w-full bg-neutral-800 text-neutral-200 px-3 py-1 rounded mx-1">Select Day</button>
-            <input type="date" name="selectedDay" id="selectedDay" class="w-full px-3 py-1 border border-black border-opacity-70 rounded mx-1" value="{{formattedDate}}">
-            <label for="selectedDay" class="w-full mx-1">Switch days to see what events are going on!</label>
+    <div class="flex justify-center">
+        <form action="/select-day" method="post" class="flex flex-col items-center">
+            <label for="selectedDay" class="p-2">Switch days to see what events are going on!</label>
+            <div class="flex">
+                <input type="date" name="selectedDay" id="selectedDay" class="rounded m-1 p-2" value="{{formattedDate}}">
+                <button type="submit" class="w-fit bg-neutral-800 text-neutral-200 rounded m-1 p-2">Select Day</button>
+            </div>
         </form>
-    </section>
+    </div>
 
-    {{!-- Calender / Time Segments --}}
-    <section class="w-full p-4">
-        <div class="flex justify-between m-1">
-            <a href="/event">
-                <p class="bg-neutral-800 text-neutral-200 px-3 py-1 rounded">Create Event</p>
-            </a>
-            <h3 class="text-center text-lg md:text-2xl">Your daily overview</h3>
-        </div>
-        <ul class="border border-black border-opacity-70 opacity-70 rounded">
-            <li class="p-1">1am</li>
-            <li class="p-1">2am</li>
-            <li class="p-1">3am</li>
-            <li class="p-1">4am</li>
-            <li class="p-1">5am</li>
-            <li class="p-1">6am</li>
-            <li class="p-1">7am</li>
-            <li class="p-1">8am</li>
-            <li class="p-1">9am</li>
-            <li class="p-1">10am</li>
-            <li class="p-1">11am</li>
-            <li class="p-1">12am</li>
-            <li class="p-1">1pm</li>
-            <li class="p-1">2pm</li>
-            <li class="p-1">3pm</li>
-            <li class="p-1">4pm</li>
-            <li class="p-1">5pm</li>
-            <li class="p-1">6pm</li>
-            <li class="p-1">7pm</li>
-            <li class="p-1">8pm</li>
-            <li class="p-1">9pm</li>
-            <li class="p-1">10pm</li>
-            <li class="p-1">11pm</li>
-            <li class="p-1">12pm</li>
-        </ul>
-    </section>
+    {{!-- Title --}}
+    <h3 class="text-center text-xl md:text-2xl lg:text-4xl m-4 underline">Day Overview</h3>
+    
 
-    {{!-- To-Do List --}}
-    <section class="w-full p-4">
-        <h3 class="text-center text-lg md:text-2xl">To-Do List</h3>
+    {{!-- Container for calender, todos, & notes --}}
+    <div class="container justify-center flex flex-col md:flex-row m-auto">
 
-    {{!-- Form for creating new tasks --}}
-        <form id="new-task-form" class="text-center" action="/new-task" method="post">
-            <input type="text" id="new-task" placeholder="New task" required />
-            <button type="submit">Add Task</button>
-        </form>
+        {{!-- Events --}}
+        <section class="flex justify-center p-4">
+            <div class="flex flex-col w-fit mx-4 mt-2">
+                <h4 class="text-center text-lg md:text-2xl">Events</h4>
 
-    {{!-- List of tasks --}}
-        <ul id="task-list">
-            {{#each tasks}}
-                <li>
-                <input type="checkbox" id="task-{{@index}}" {{#if this.completed}}checked{{/if}} />
-                <label for="task-{{@index}}">{{this.task}}</label>
-                </li>
-            {{/each}}
-        </ul>
-    </section>
+                {{!-- New Event Link --}}
+                <a href="/event" class="flex justify-end">
+                    <p class="bg-neutral-800 text-neutral-200 rounded w-full m-2 p-1 text-center">Create New Event</p>
+                </a>
+                {{!-- Event Cards --}}
+                {{#each events as |event|}}
+                    <div class="flex flex-col text-start text-lg bg-white rounded m-2 p-3 w-full">
+                        <p class="text-xl font-bold text-center">{{event.event_name}}</p>
+                        <p>Starts at: {{event.event_time}}</p>
+                        <p>Goes on for: {{event.event_length}} hours</p>
+                        <p>Takes place at <span class="underline">{{event.event_location}}</span></p>
+                    </div>
+                {{/each}}
+            </div>
+        </section>
 
-    {{!-- Notes --}}
-    <section class="w-full p-4">
-        <h3 class="text-center text-lg md:text-2xl">Notes</h3>
-        <form action="/save-note" method="post">
-            <textarea name="note" class="w-full p-2 mt-2 border border-black border-opacity-70 rounded" placeholder="Write your note here"></textarea>
-            <button type="submit" class="w-full p-2 mt-2 bg-blue-500 text-white rounded">Save Note</button>
-        </form>
-    </section>
+        {{!-- To-Do --}}
+        <section class="flex justify-center p-4">
+            <div class="flex flex-col w-fit mx-4 mt-2">
+                <h4 class="text-center text-lg md:text-2xl">To-Do List</h4>
+
+                {{!-- Form for creating new tasks --}}
+                <form id="new-task-form" class="text-center m-2" action="/new-todo" method="post">
+                    <input type="date" name="todoDay" id="todoDay" value="{{formattedDate}}" hidden>
+                    <input type="text" name="todo_name" id="todo_name" placeholder="New task" class="py-1 rounded" required />
+                    <button type="submit" class="bg-neutral-800 text-neutral-200 rounded w-fit mx-2 px-2 py-1">Add Task</button>
+                </form>
+
+                {{!-- List of todos --}}
+                <ul id="task-list">
+                    {{#each todos}}
+                        <li>
+                        <input type="checkbox" id="todos-{{@index}}" {{#if this.completed}}checked{{/if}} />
+                        <label for="todos-{{@index}}">{{this.todo_name}}</label>
+                        </li>
+                    {{/each}}
+                </ul>
+            </div>
+        </section>
+
+        {{!-- Notes --}}
+        <section class="flex justify-center p-4 mb-4">
+            <div class="flex flex-col w-fit mx-4 mt-2">
+                <h4 class="text-center text-lg md:text-2xl">Notes</h4>
+                <form action="/save-note" method="post">
+                    <textarea name="note"  class="w-full p-2 mt-2 border border-black border-opacity-70 rounded" placeholder="Write your note here">{{userData.notes}}</textarea>
+                    <button type="submit" class="bg-neutral-800 text-neutral-200 rounded w-full px-2 py-1">Save Note</button>
+                </form>
+            </div>
+        </section>
+    </div>
 </div>

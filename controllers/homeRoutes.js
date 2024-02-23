@@ -3,10 +3,12 @@ const ensureAuthenticated = require('../utils/auth');
 const { Day, Event, Todo, User } = require('../models');
 const e = require('express');
 
+// GET / - loads the homepage
 router.get('/', ensureAuthenticated, async (req, res) => {
   try {
     // Getting the user data from the session
-    const userData = req.session.passport.user;
+    let userData = req.user;
+    userData = userData.get({ plain: true });
 
     // Creating the date object for today
     let date = new Date();
@@ -45,6 +47,7 @@ router.get('/', ensureAuthenticated, async (req, res) => {
         day_id: day.id
       }
     });
+    events = events.map(event => event.get({ plain: true }));
 
     // searching for the todos in the database
     let todos = await Todo.findAll({
@@ -52,6 +55,9 @@ router.get('/', ensureAuthenticated, async (req, res) => {
         day_id: day.id
       }
     });
+    todos = todos.map(todo => todo.get({ plain: true }));
+
+    console.log(userData);
 
     // render the homepage
     res.render('homepage', { userData, today, formattedDate, day, events, todos});
@@ -61,6 +67,7 @@ router.get('/', ensureAuthenticated, async (req, res) => {
   }
 });
 
+// GET /event - loads the event page
 router.get('/event', ensureAuthenticated, async (req, res) => {
   try {
     const userData = req.session.passport.user;
@@ -72,6 +79,8 @@ router.get('/event', ensureAuthenticated, async (req, res) => {
   }
 });
 
+
+// POST /event - creates a new event
 router.post('/event', ensureAuthenticated, async (req, res) => {
   try {
     const userData = req.user;
@@ -111,46 +120,55 @@ router.post('/event', ensureAuthenticated, async (req, res) => {
   }
 });
 
-router.post('/new-task', async (req, res) => {
+// POST /new-todo - creates a new todo
+router.post('/new-todo', async (req, res) => {
+  console.log(req.body);
   try {
-    const day = Day.findOne({
-      where: { date: req.body.date, user_id: req.user.id}
+    // find the day
+    const day = await Day.findOne({
+      where: { date: new Date(req.body.todoDay), user_id: req.user.id}
     });
-    let dayId;
-    // if the day does not exist, create a new day
-    if (!day || day == null) {
-      const newDay = await Day.create({ date: req.body.date, user_id: userData.id });
-      dayId = newDay.id;
-      console.log("new day created");
-    } else {
-      dayId = day.id;
-      console.log("day already exists");
+
+    // 404 if day not found
+    if (!day) {
+      res.status(404).json({ message: 'There was an error creating the todo: day not found' });
+      return;
     }
+
     // Create a new todo
     await Todo.create({
-      task: req.body.task,
+      todo_name: req.body.todo_name,
       completed: false,
-      day_id: dayId,
-      // Add other fields as necessary
+      day_id: day.id
     });
 
     // Redirect to the homepage
-    res.redirect('/');
-  } catch (error) {
-    console.error(error);
-    res.status(500).send('An error occurred while trying to create a new task');
-  }
-});
+    res.status(200).redirect('/');
 
-router.post('/save-note', ensureAuthenticated, async (req, res) => {
-  try {
-    const userData = req.user;
-    res.status(200).json(req.body);
   } catch (err) {
     res.status(500).json(err);
   }
 });
 
+// POST /save-note - saves the note property
+router.post('/save-note', ensureAuthenticated, async (req, res) => {
+  try {
+    console.log(req.body.note);
+    let userData = req.user;
+    userData.notes = req.body.note;
+    await User.update(userData, {
+      where: {
+        id: userData.id
+      }
+    });
+    await userData.save();
+    res.status(200).redirect('/');
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+
+// POST /select-day - saves the selected day
 router.post('/select-day', ensureAuthenticated, async (req, res) => {
   try {
     const userData = req.user;
