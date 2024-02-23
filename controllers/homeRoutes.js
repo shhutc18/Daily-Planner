@@ -39,27 +39,24 @@ router.get('/event', ensureAuthenticated, async (req, res) => {
 router.post('/event', ensureAuthenticated, async (req, res) => {
   try {
     const userData = req.user;
-    // finding if the day exists
-    const day = Day.findOne({ where: { date: req.body.date } });
-    let dayId;
-    // if the day does not exist, create a new day
-    if (!day || day == null) {
-      const newDay = await Day.create({ date: req.body.date, user_id: userData.id });
-      dayId = newDay.id;
-    } else {
-      dayId = day.id;
-    }
-    // create a new event
-    const eventData = {
-      event_name: req.body.event_name,
-      event_time: req.body.event_time,
-      event_location: req.body.event_location,
-      event_length: req.body.event_length,
-      day_id: dayId
+
+    let day = await Day.findOne({
+      where: {
+        date: req.body.date,
+        user_id: userData.id
+      }
+    });
+
+    if (day == null) {
+      const newDay = await Day.create({
+        date: req.body.date,
+        user_id: userData.id
+      });
+      day = newDay;
     }
 
-    const newEvent = await Event.create(eventData);
-    res.status(200).json(newEvent);
+
+    res.status(200).json(day);
 
   } catch (err) {
     res.status(500).json(err);
