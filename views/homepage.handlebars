@@ -14,7 +14,7 @@
     <section class="flex align-center p-4 w-full">
         <form action="/select-day" method="post" class="flex">
             <button type="submit" class="w-full bg-neutral-800 text-neutral-200 px-3 py-1 rounded mx-1">Select Day</button>
-            <input type="date" name="selectedDay" class="w-full px-3 py-1 border border-black border-opacity-70 rounded mx-1">
+            <input type="date" name="selectedDay" id="selectedDay" class="w-full px-3 py-1 border border-black border-opacity-70 rounded mx-1" value="{{formattedDate}}">
             <label for="selectedDay" class="w-full mx-1">Switch days to see what events are going on!</label>
         </form>
     </section>

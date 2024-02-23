@@ -10,14 +10,16 @@ router.get('/', ensureAuthenticated, async (req, res) => {
     const date = new Date();
     let day = date.getDate();
     let month = date.getMonth() + 1;
+    if (month < 10) month = '0' + month;
     let year = date.getFullYear();
     let today = {
       day: day,
       month: month,
       year: year
     }
+    let formattedDate = `${year}-${month}-${day}`;
 
-    res.render('homepage', { userData, today });
+    res.render('homepage', { userData, today, formattedDate });
 
   } catch (err) {
     res.status(500).json(err);
