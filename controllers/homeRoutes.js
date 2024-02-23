@@ -8,28 +8,30 @@ router.get('/', ensureAuthenticated, async (req, res) => {
     // Getting the user data from the session
     const userData = req.session.passport.user;
 
-    // Getting the current date and formatting it
-    const date = new Date();
-    let currentDay = date.getDate();
+    // Creating the date object for today
+    let date = new Date();
+    date.setHours(0, 0, 0, 0);
     let month = date.getMonth() + 1;
     if (month < 10) month = '0' + month;
-    let year = date.getFullYear();
     let today = {
-      day: currentDay,
+      day: date.getDate(),
       month: month,
-      year: year
+      year: date.getFullYear()
     }
-    let formattedDate = `${year}-${month}-${currentDay}`;
 
-    // Get the user's day data
+    // formatting the date to match the date in the database
+    let formattedDate = `${today.year}-${today.month}-${today.day}`;
+
+    // searching for the day in the database
     let day = await Day.findOne({
       where: {
-        date: formattedDate,
+        date: new Date(formattedDate),
         user_id: userData.id
       }
     });
     // If the day does not exist, create a new day
     if (day == null) {
+      console.log("day does not exist");
       const newDay = await Day.create({
         date: formattedDate,
         user_id: userData.id
@@ -37,7 +39,21 @@ router.get('/', ensureAuthenticated, async (req, res) => {
       day = newDay;
     }
 
-    console.log(day);
+    // searching for the events in the database
+    let events = await Event.findAll({
+      where: {
+        day_id: day.id
+      }
+    });
+    console.log(events);
+
+    // searching for the todos in the database
+    let todos = await Todo.findAll({
+      where: {
+        day_id: day.id
+      }
+    });
+    console.log(todos);
 
     // render the homepage
     res.render('homepage', { userData, today, formattedDate, day });
