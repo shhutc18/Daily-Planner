@@ -67,6 +67,71 @@ router.get('/', ensureAuthenticated, async (req, res) => {
   }
 });
 
+// GET /:day - loads the homepage for a specific day
+router.get('/:day', ensureAuthenticated, async (req, res) => {
+  try {
+
+    console.log(req.params.day, "passed in day");
+
+    // Getting the user data from the session
+    let userData = req.user;
+    userData = userData.get({ plain: true });
+
+    // Creating the date object for today
+    let date = new Date(req.params.day);
+    date.setHours(0, 0, 0, 0);
+    let month = date.getMonth() + 1;
+    if (month < 10) month = '0' + month;
+    let today = {
+      day: date.getDate(),
+      month: month,
+      year: date.getFullYear()
+    }
+
+    // formatting the date to match the date in the database
+    let formattedDate = `${today.year}-${today.month}-${today.day}`;
+
+    // searching for the day in the database
+    let day = await Day.findOne({
+      where: {
+        date: new Date(formattedDate),
+        user_id: userData.id
+      }
+    });
+    // If the day does not exist, create a new day
+    if (day == null) {
+      console.log("day does not exist");
+      const newDay = await Day.create({
+        date: formattedDate,
+        user_id: userData.id
+      });
+      day = newDay;
+    }
+
+    // searching for the events in the database
+    let events = await Event.findAll({
+      where: {
+        day_id: day.id
+      }
+    });
+    events = events.map(event => event.get({ plain: true }));
+
+    // searching for the todos in the database
+    let todos = await Todo.findAll({
+      where: {
+        day_id: day.id
+      }
+    });
+    todos = todos.map(todo => todo.get({ plain: true }));
+
+    // render the homepage
+    res.render('homepage', { userData, today, formattedDate, day, events, todos});
+
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+
 // GET /event - loads the event page
 router.get('/event', ensureAuthenticated, async (req, res) => {
   try {
@@ -78,7 +143,6 @@ router.get('/event', ensureAuthenticated, async (req, res) => {
     res.status(500).json(err);
   }
 });
-
 
 // POST /event - creates a new event
 router.post('/event', ensureAuthenticated, async (req, res) => {
@@ -163,17 +227,6 @@ router.post('/save-note', ensureAuthenticated, async (req, res) => {
     });
     await userData.save();
     res.status(200).redirect('/');
-  } catch (err) {
-    res.status(500).json(err);
-  }
-});
-
-// POST /select-day - saves the selected day
-router.post('/select-day', ensureAuthenticated, async (req, res) => {
-  try {
-    const userData = req.user;
-    console.log(req.body);
-    res.status(200).json(req.body);
   } catch (err) {
     res.status(500).json(err);
   }

@@ -13,10 +13,10 @@
 
     {{!-- Select Day Calender --}}
     <div class="flex justify-center">
-        <form action="/select-day" method="post" class="flex flex-col items-center">
-            <label for="selectedDay" class="p-2">Switch days to see what events are going on!</label>
+        <form action="/" method="get" class="flex flex-col items-center">
+            <label for="day" class="p-2">Switch days to see what events are going on!</label>
             <div class="flex">
-                <input type="date" name="selectedDay" id="selectedDay" class="rounded m-1 p-2" value="{{formattedDate}}">
+                <input type="date" name="day" id="day" class="rounded m-1 p-2" value="{{formattedDate}}">
                 <button type="submit" class="w-fit bg-neutral-800 text-neutral-200 rounded m-1 p-2">Select Day</button>
             </div>
         </form>
