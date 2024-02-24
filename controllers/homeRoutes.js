@@ -149,8 +149,7 @@ router.post('/new-todo', async (req, res) => {
       day_id: day.id
     });
 
-    // Redirect to the homepage
-    res.status(200).redirect('/');
+    res.status(200).redirect('/?day=' + req.body.todoDay);
 
   } catch (err) {
     res.status(500).json(err);
