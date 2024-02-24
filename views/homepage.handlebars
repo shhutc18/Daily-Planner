@@ -63,14 +63,17 @@
                 </form>
 
                 {{!-- List of todos --}}
-                <ul id="task-list">
-                    {{#each todos}}
-                        <li>
-                        <input type="checkbox" id="todos-{{@index}}" {{#if this.completed}}checked{{/if}} />
-                        <label for="todos-{{@index}}">{{this.todo_name}}</label>
-                        </li>
-                    {{/each}}
-                </ul>
+                <form id="todo-form" method="post" action="/update-todos">
+                    <ul id="task-list">
+                        {{#each todos}}
+                            <li>
+                                <input type="checkbox" name="completedTodos" value="{{this.id}}" id="todos-{{@index}}" {{#if this.completed}}checked{{/if}} />
+                                <label for="todos-{{@index}}">{{this.todo_name}}</label>
+                            </li>
+                        {{/each}}
+                    </ul>
+                    <button type="submit">Save</button>
+                </form>
             </div>
         </section>
 
