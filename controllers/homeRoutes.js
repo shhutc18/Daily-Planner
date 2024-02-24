@@ -68,7 +68,7 @@ router.get('/', ensureAuthenticated, async (req, res) => {
 });
 
 // GET /:day - loads the homepage for a specific day
-router.get('/:day', ensureAuthenticated, async (req, res) => {
+router.get('/day/:day', ensureAuthenticated, async (req, res) => {
   try {
 
     console.log(req.params.day, "passed in day");
