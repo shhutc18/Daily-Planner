@@ -11,7 +11,15 @@ router.get('/', ensureAuthenticated, async (req, res) => {
     userData = userData.get({ plain: true });
 
     // Creating the date object for today
-    let date = new Date();
+    let date;
+    if (req.query.day) {
+      // If the day is specified in the query, use that day
+      const parts = req.query.day.split('-');
+      // Months are 0-indexed in JavaScript dates, so we need to subtract 1 from the month
+      date = new Date(parts[0], parts[1] - 1, parts[2]);
+    } else {
+      date = new Date();
+    }
     date.setHours(0, 0, 0, 0);
     let month = date.getMonth() + 1;
     if (month < 10) month = '0' + month;
@@ -58,71 +66,6 @@ router.get('/', ensureAuthenticated, async (req, res) => {
     todos = todos.map(todo => todo.get({ plain: true }));
 
     console.log(userData);
-
-    // render the homepage
-    res.render('homepage', { userData, today, formattedDate, day, events, todos});
-
-  } catch (err) {
-    res.status(500).json(err);
-  }
-});
-
-// GET /:day - loads the homepage for a specific day
-router.get('/day/:day', ensureAuthenticated, async (req, res) => {
-  try {
-
-    console.log(req.params.day, "passed in day");
-
-    // Getting the user data from the session
-    let userData = req.user;
-    userData = userData.get({ plain: true });
-
-    // Creating the date object for today
-    let date = new Date(req.params.day);
-    date.setHours(0, 0, 0, 0);
-    let month = date.getMonth() + 1;
-    if (month < 10) month = '0' + month;
-    let today = {
-      day: date.getDate(),
-      month: month,
-      year: date.getFullYear()
-    }
-
-    // formatting the date to match the date in the database
-    let formattedDate = `${today.year}-${today.month}-${today.day}`;
-
-    // searching for the day in the database
-    let day = await Day.findOne({
-      where: {
-        date: new Date(formattedDate),
-        user_id: userData.id
-      }
-    });
-    // If the day does not exist, create a new day
-    if (day == null) {
-      console.log("day does not exist");
-      const newDay = await Day.create({
-        date: formattedDate,
-        user_id: userData.id
-      });
-      day = newDay;
-    }
-
-    // searching for the events in the database
-    let events = await Event.findAll({
-      where: {
-        day_id: day.id
-      }
-    });
-    events = events.map(event => event.get({ plain: true }));
-
-    // searching for the todos in the database
-    let todos = await Todo.findAll({
-      where: {
-        day_id: day.id
-      }
-    });
-    todos = todos.map(todo => todo.get({ plain: true }));
 
     // render the homepage
     res.render('homepage', { userData, today, formattedDate, day, events, todos});
