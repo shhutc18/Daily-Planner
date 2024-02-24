@@ -150,6 +150,26 @@ router.post('/new-todo', async (req, res) => {
   }
 });
 
+router.post('/update-todos', async (req, res) => {
+  try {
+    // Get the ids of the completed todos
+    const completedTodos = req.body.completedTodos;
+
+    // Delete the completed todos from the database
+    await Todo.destroy({
+      where: {
+        id: completedTodos
+      }
+    });
+
+    // Redirect to the homepage
+    res.redirect('/');
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('An error occurred while trying to delete the todos');
+  }
+});
+
 // POST /save-note - saves the note property
 router.post('/save-note', ensureAuthenticated, async (req, res) => {
   try {
