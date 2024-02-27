@@ -29,7 +29,7 @@ This application is a daily planner. Upon signing in, the user will be able to c
 
 ## Installation
 
-None required. You can view the deployed application here: https://rocky-mountain-31745-6823d73c66a2.herokuapp.com/
+None required. You can view the deployed application here: https://rocky-mountain-31745-6823d73c66a2.herokuapp.com/login
 
 ## Usage
 
@@ -46,11 +46,11 @@ This application was created by Chase Seeberger, Will Schickler, and Shelby Hutc
 ## Link
 
 https://github.com/shhutc18/Daily-Planner
-https://rocky-mountain-31745-6823d73c66a2.herokuapp.com/
+https://rocky-mountain-31745-6823d73c66a2.herokuapp.com/login
 
 ## Screenshot
 
-<!-- Insert final screenshot -->
+<img src="./public/images/Planner.jpg">
 
 ## Questions
 
